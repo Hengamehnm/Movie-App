@@ -3,8 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import Home from "./src/pages/Home";
+
+import Tabs from "./src/layout/Tabs";
 import Header from "./src/layout/Header";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -21,9 +23,10 @@ export default function App() {
           >
             <Stack.Screen
               name="Home"
-              component={Home}
+              component={Tabs}
               options={{ title: "Movies App" }}
             />
+
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
