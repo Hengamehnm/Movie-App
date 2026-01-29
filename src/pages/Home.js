@@ -1,11 +1,14 @@
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import Card from "../components/Card";
 import { getMovie } from "../utils/getServices";
 import { colors } from "../utils/colors";
 import Dropdown from "../components/Dropdown";
+
 const Home = () => {
+  const navigation = useNavigation();
   const [movie, setMovie] = useState([]);
   const [movieType, setMovieType] = useState("popular");
   const [page, setPage] = useState(1);
@@ -23,12 +26,15 @@ const Home = () => {
         setMovie((prev) => [...prev, ...(data?.results ?? [])]);
       } catch (error) {
         console.log(error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
     loadMovies();
   }, [movieType, page]);
+  const goToShow = (id) => {
+    navigation.navigate("ShowDetails", { id });
+  };
   return (
     <ScrollView style={styles.container}>
       <Dropdown
@@ -43,6 +49,7 @@ const Home = () => {
           popularity={m.popularity}
           release={m.release_date}
           imageSrc={m.poster_path}
+          onPressDetails={() => goToShow(m.id)}
         />
       ))}
       <View style={styles.btnWrapper}>
