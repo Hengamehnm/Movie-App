@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import Home from "../pages/Home";
 import SearchResult from "../pages/SearchResult";
 import TVShows from "../pages/TVShows";
+import { colors } from "../utils/colors";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -16,9 +17,9 @@ export default function Tabs() {
           shadowOffset: { width: 0, height: 1 },
         },
         tabBarLabelStyle: { fontWeight: "600" },
-        tabBarActiveTintColor: "#2c3e50",
+        tabBarActiveTintColor: colors.green,
         tabBarInactiveTintColor: "#757676",
-        tabBarIndicatorStyle: { backgroundColor: "#2c3e50" },
+        tabBarIndicatorStyle: { backgroundColor: colors.green },
       }}
     >
       <Tab.Screen name="Movies" component={Home} />

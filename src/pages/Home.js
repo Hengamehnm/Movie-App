@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { getMovie } from "../utils/getServices";
@@ -6,24 +6,30 @@ import { getMovie } from "../utils/getServices";
 const Home = () => {
   const [movie, setMovie] = useState([]);
   const [movieType, setMovieType] = useState("popular");
+  const [page, setPage] = useState(1);
   useEffect(() => {
     const loadMovies = async () => {
       try {
-        const data = await getMovie(movieType);
-        console.log(data.results);
-
-        setMovie(data?.results ?? []);
+        const data = await getMovie(movieType, page);
+        setMovie((prev) => [...prev, ...(data?.results ?? [])]);
       } catch (error) {
         console.log(error);
       }
     };
     loadMovies();
-  }, [movieType]);
+  }, [movieType, page]);
   return (
     <ScrollView style={styles.container}>
       {movie.map((m) => (
-        <Card key={m.id} title={m.title} popularity={m.popularity} release={m.release_date}/>
+        <Card
+          key={m.id}
+          title={m.title}
+          popularity={m.popularity}
+          release={m.release_date}
+          imageSrc={m.poster_path}
+        />
       ))}
+      <Button title="Load More" onPress={() => setPage((p) => p + 1)} />
     </ScrollView>
   );
 };
