@@ -1,10 +1,29 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { useEffect, useState } from "react";
+import Card from "../components/Card";
+import { getMovie } from "../utils/getServices";
 
 const Home = () => {
+  const [movie, setMovie] = useState([]);
+  const [movieType, setMovieType] = useState("popular");
+  useEffect(() => {
+    const loadMovies = async () => {
+      try {
+        const data = await getMovie(movieType);
+        console.log(data.results);
+
+        setMovie(data?.results ?? []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadMovies();
+  }, [movieType]);
   return (
     <ScrollView style={styles.container}>
-      <Text>TEST</Text>
+      {movie.map((m) => (
+        <Card key={m.id} title={m.title} popularity={m.popularity} release={m.release_date}/>
+      ))}
     </ScrollView>
   );
 };
