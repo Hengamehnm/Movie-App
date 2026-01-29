@@ -1,7 +1,15 @@
-import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  onPressDetails,
+} from "react-native";
 import { colors } from "../utils/colors";
 
-export default function Card({ title, popularity, release, imageSrc }) {
+export default function Card({ title, popularity, release, imageSrc, onPressDetails }) {
   return (
     <View style={styles.container}>
       {imageSrc ? (
@@ -18,12 +26,7 @@ export default function Card({ title, popularity, release, imageSrc }) {
         <Text style={styles.text}>Popularity: {popularity}</Text>
         <Text style={styles.text}>Release Date: {release}</Text>
 
-        <Pressable
-          style={styles.btn}
-          onPress={() => {
-            console.log(`${title} pressed`);
-          }}
-        >
+        <Pressable style={styles.btn} onPress={onPressDetails}>
           <Text style={styles.btnText}>More Details</Text>
         </Pressable>
       </View>

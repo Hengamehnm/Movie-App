@@ -8,6 +8,7 @@ import Tabs from "./src/layout/Tabs";
 import Header from "./src/layout/Header";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ShowDetails from "./src/pages/ShowDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,17 +19,25 @@ export default function App() {
         <PaperProvider>
           <BottomSheetModalProvider>
             <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  header: ({ options, route }) => (
-                    <Header title={options.title ?? route.name} />
-                  ),
-                }}
-              >
+              <Stack.Navigator>
                 <Stack.Screen
                   name="Home"
                   component={Tabs}
-                  options={{ title: "Movies App" }}
+                  options={{
+                    title: "Movies App",
+                    header: ({ options, route }) => (
+                      <Header title={options.title ?? route.name} />
+                    ),
+                  }}
+                />
+                <Stack.Screen
+                  name="ShowDetails"
+                  component={ShowDetails}
+                  options={{
+                    headerShown: true,
+                    headerBackTitle: "Back to list",
+                    headerBackTitleVisible: true,
+                  }}
                 />
               </Stack.Navigator>
             </NavigationContainer>
