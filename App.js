@@ -6,30 +6,35 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import Tabs from "./src/layout/Tabs";
 import Header from "./src/layout/Header";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <PaperProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              header: ({ options, route }) => (
-                <Header title={options.title ?? route.name} />
-              ),
-            }}
-          >
-            <Stack.Screen
-              name="Home"
-              component={Tabs}
-              options={{ title: "Movies App" }}
-            />
-
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <PaperProvider>
+          <BottomSheetModalProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  header: ({ options, route }) => (
+                    <Header title={options.title ?? route.name} />
+                  ),
+                }}
+              >
+                <Stack.Screen
+                  name="Home"
+                  component={Tabs}
+                  options={{ title: "Movies App" }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </BottomSheetModalProvider>
+        </PaperProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
