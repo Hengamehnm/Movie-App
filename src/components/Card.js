@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { colors } from "../utils/colors";
 
 export default function Card({ title, popularity, release, imageSrc }) {
@@ -14,15 +14,36 @@ export default function Card({ title, popularity, release, imageSrc }) {
         <View />
       )}
       <View style={styles.info}>
-        <Text style={styles.header}>{title}</Text>
+        <Text style={[styles.header, { flexWrap: "wrap" }]}>{title}</Text>
         <Text style={styles.text}>Popularity: {popularity}</Text>
         <Text style={styles.text}>Release Date: {release}</Text>
+
+        <Pressable
+          style={styles.btn}
+          onPress={() => {
+            console.log(`${title} pressed`);
+          }}
+        >
+          <Text style={styles.btnText}>More Details</Text>
+        </Pressable>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  btn: {
+    backgroundColor: colors.buttonBlue,
+    padding: 12,
+    borderRadius: 5,
+    width: "80%",
+  },
+  btnText: {
+    fontSize: 13,
+    color: colors.white,
+    textAlign: "center",
+    fontWeight: "600",
+  },
   container: {
     flexDirection: "row",
     alignItems: "center",
@@ -34,7 +55,7 @@ const styles = StyleSheet.create({
 
   coverImage: {
     width: 100,
-    height: 100,
+    height: 110,
     marginRight: 10,
   },
   header: {
@@ -43,7 +64,8 @@ const styles = StyleSheet.create({
     color: colors.header,
   },
   info: {
-    gap: "3",
+    gap: "4",
+    flex: 1,
   },
   text: {
     color: colors.text,
