@@ -1,25 +1,41 @@
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native-paper";
 import Card from "../components/Card";
 import { getMovie } from "../utils/getServices";
 import { colors } from "../utils/colors";
+import Dropdown from "../components/Dropdown";
 const Home = () => {
   const [movie, setMovie] = useState([]);
   const [movieType, setMovieType] = useState("popular");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(false);
+    setMovie([]);
+    setPage(1);
+  }, [movieType]);
   useEffect(() => {
     const loadMovies = async () => {
+      setLoading(true);
       try {
         const data = await getMovie(movieType, page);
         setMovie((prev) => [...prev, ...(data?.results ?? [])]);
       } catch (error) {
         console.log(error);
+      }finally{
+        setLoading(false);
       }
     };
     loadMovies();
   }, [movieType, page]);
   return (
     <ScrollView style={styles.container}>
+      <Dropdown
+        selected={movieType}
+        list={["now_playing", "popular", "top_rated", "upcoming"]}
+        onSelect={setMovieType}
+      />
       {movie.map((m, index) => (
         <Card
           key={index}
@@ -30,7 +46,11 @@ const Home = () => {
         />
       ))}
       <View style={styles.btnWrapper}>
-        <Button title="Load More" onPress={() => setPage((p) => p + 1)} />
+        {loading ? (
+          <ActivityIndicator color={colors.green} size="large" />
+        ) : (
+          <Button title="Load More" onPress={() => setPage((p) => p + 1)} />
+        )}
       </View>
     </ScrollView>
   );
