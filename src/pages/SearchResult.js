@@ -36,7 +36,7 @@ export default function SearchResult() {
         <View>
           <Dropdown
             selected={searchType}
-            list={["movie", "multi"]}
+            list={["movie", "multi", "tv"]}
             onSelect={setSearchType}
           />
           <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
