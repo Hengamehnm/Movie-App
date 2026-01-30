@@ -17,7 +17,9 @@ export default function Card({
           resizeMode="cover"
         />
       ) : (
-        <View />
+        <View
+          style={{ width: 100, height: 110, backgroundColor: colors.border }}
+        />
       )}
       <View style={styles.info}>
         <Text style={[styles.header, { flexWrap: "wrap" }]}>{title}</Text>

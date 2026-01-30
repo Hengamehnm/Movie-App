@@ -6,7 +6,7 @@ export default function Pagination({ onPrev, onNext, prev, next }) {
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: 8,
+        paddingHorizontal: 10,
         alignItems: "center",
       }}
     >
