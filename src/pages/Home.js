@@ -1,40 +1,45 @@
-import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import Card from "../components/Card";
+import Dropdown from "../components/Dropdown";
+import Pagination from "../components/Pagination";
 import { getMovie } from "../utils/getServices";
 import { colors } from "../utils/colors";
-import Dropdown from "../components/Dropdown";
 
 const Home = () => {
   const navigation = useNavigation();
+
   const [movie, setMovie] = useState([]);
   const [movieType, setMovieType] = useState("popular");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    setLoading(false);
     setMovie([]);
     setPage(1);
   }, [movieType]);
+
   useEffect(() => {
     const loadMovies = async () => {
       setLoading(true);
       try {
         const data = await getMovie(movieType, page);
-        setMovie((prev) => [...prev, ...(data?.results ?? [])]);
-      } catch (error) {
-        console.log(error);
+        setMovie(data?.results ?? []);
+      } catch (e) {
+        console.log(e);
+        setMovie([]);
       } finally {
         setLoading(false);
       }
     };
+
     loadMovies();
   }, [movieType, page]);
-  const goToShow = (id) => {
-    navigation.navigate("ShowDetails", { id });
-  };
+
+  const canPrev = page > 1;
+  const visibleMovies = movie.slice(0, 10);
   return (
     <ScrollView style={styles.container}>
       <Dropdown
@@ -42,23 +47,32 @@ const Home = () => {
         list={["now_playing", "popular", "top_rated", "upcoming"]}
         onSelect={setMovieType}
       />
-      {movie.map((m, index) => (
-        <Card
-          key={index}
-          title={m.title}
-          popularity={m.popularity}
-          release={m.release_date}
-          imageSrc={m.poster_path}
-          onPressDetails={() => goToShow(m.id)}
-        />
-      ))}
-      <View style={styles.btnWrapper}>
-        {loading ? (
-          <ActivityIndicator color={colors.green} size="large" />
-        ) : (
-          <Button title="Load More" onPress={() => setPage((p) => p + 1)} />
-        )}
-      </View>
+
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          <Pagination
+            onPrev={canPrev ? () => setPage((p) => p - 1) : undefined}
+            onNext={() => setPage((p) => p + 1)}
+            prev={canPrev}
+            next={true}
+          />
+
+          {visibleMovies.map((m) => (
+            <Card
+              key={m.id}
+              title={m.title}
+              popularity={m.popularity}
+              release={m.release_date}
+              imageSrc={m.poster_path}
+              onPressDetails={() =>
+                navigation.navigate("ShowDetails", { id: m.id })
+              }
+            />
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 };
@@ -66,12 +80,5 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  btnWrapper: {
-    marginBottom: 20,
-    marginTop: 10,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
+  container: { flex: 1, backgroundColor: colors.white },
 });

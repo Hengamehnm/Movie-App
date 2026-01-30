@@ -1,15 +1,13 @@
-import {
-  Button,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  onPressDetails,
-} from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { colors } from "../utils/colors";
 
-export default function Card({ title, popularity, release, imageSrc, onPressDetails }) {
+export default function Card({
+  title,
+  popularity,
+  release,
+  imageSrc,
+  onPressDetails,
+}) {
   return (
     <View style={styles.container}>
       {imageSrc ? (
