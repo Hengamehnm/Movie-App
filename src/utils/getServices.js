@@ -11,6 +11,28 @@ export async function getMovie(type, page) {
     });
 
     const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.log("failed fetch movie", error);
+  }
+}
+
+export async function searchMovieApi(selected, searchInput) {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/search/${selected}?query=${searchInput}&language=en-US&page=1'`,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      },
+    );
+
+    const data = await res.json();
+
     
     return data;
   } catch (error) {

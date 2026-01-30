@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "../components/AppTextInput";
 import Dropdown from "../components/Dropdown";
+import { ActivityIndicator } from "react-native-paper";
 import { colors } from "../utils/colors";
-
+import { searchMovieApi } from "../utils/getServices";
+import Card from "../components/Card";
+import { ScrollView } from "react-native-gesture-handler";
 function RequiredLabel({ children }) {
   return (
     <View style={styles.labelRow}>
@@ -15,43 +19,87 @@ function RequiredLabel({ children }) {
 }
 
 export default function SearchResult() {
+  const navigation = useNavigation();
   const [name, setName] = useState("");
   const [searchType, setSearchType] = useState("multi");
+  const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
+  async function searchMovie() {
+    setLoading(true);
+    try {
+      const res = await searchMovieApi(searchType, name);
+      setSearchResults(res?.results ?? []);
+    } catch (error) {
+      console.log("failed search", error);
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
-    <View style={styles.container}>
-      <RequiredLabel>Search Movie/TV Show Name</RequiredLabel>
+    <ScrollView>
+      <View style={styles.container}>
+        <RequiredLabel>Search Movie/TV Show Name</RequiredLabel>
 
-      <AppTextInput
-        icon="magnify"
-        placeholder="ie, James Bond, CSI"
-        autoCorrect={false}
-        spellCheck={false}
-        onChangeText={(t) => {
-          setName(t);
-        }}
-      />
-      <RequiredLabel>Choose Search Type</RequiredLabel>
-      <View style={styles.search}>
-        <View>
-          <Dropdown
-            selected={searchType}
-            list={["movie", "multi", "tv"]}
-            onSelect={setSearchType}
-          />
-          <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
+        <AppTextInput
+          icon="magnify"
+          placeholder="ie, James Bond, CSI"
+          autoCorrect={false}
+          spellCheck={false}
+          onChangeText={(t) => {
+            setName(t);
+          }}
+        />
+        <RequiredLabel>Choose Search Type</RequiredLabel>
+        <View style={styles.search}>
+          <View>
+            <Dropdown
+              selected={searchType}
+              list={["movie", "multi", "tv"]}
+              onSelect={setSearchType}
+            />
+            <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
+          </View>
+          <Pressable style={styles.btn} onPress={searchMovie}>
+            <MaterialCommunityIcons
+              name="magnify"
+              size={20}
+              color={colors.white}
+              style={styles.icon}
+            />
+            <Text style={styles.btnText}>Search</Text>
+          </Pressable>
         </View>
-        <Pressable style={styles.btn}>
-          <MaterialCommunityIcons
-            name="magnify"
-            size={20}
-            color={colors.white}
-            style={styles.icon}
-          />
-          <Text style={styles.btnText}>Search</Text>
-        </Pressable>
       </View>
-    </View>
+      {loading ? (
+        <ActivityIndicator />
+      ) : searchResults.length > 0 ? (
+        searchResults.map((m, index) => (
+          <Card
+            key={index}
+            title={m.title || m.name}
+            popularity={m.popularity}
+            release={m.release_date || m.first_air_date}
+            imageSrc={m.poster_path}
+            onPressDetails={() =>
+              navigation.navigate("ShowDetails", { id: m.id })
+            }
+          />
+        ))
+      ) : (
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 22,
+            fontSize: 24,
+            fontWeight: 700,
+            color: colors.title
+          }}
+        >
+          Please Initiate a Search
+        </Text>
+      )}
+    </ScrollView>
   );
 }
 
@@ -63,7 +111,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 5,
     width: "30%",
-    height: 40,
+    height: 35,
+    marginBottom: 10,
+    gap: 5,
     justifyContent: "center",
   },
   btnText: {
@@ -81,9 +131,8 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderWidth: 1,
-    padding: 10,
+    padding: 50,
   },
-
   labelRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -92,5 +141,7 @@ const styles = StyleSheet.create({
   search: {
     flexDirection: "row",
     gap: 10,
+    justifyContent: "center",
+    alignSelf: "center",
   },
 });

@@ -31,6 +31,16 @@ export default function App() {
                   }}
                 />
                 <Stack.Screen
+                  name="SerachResult"
+                  component={Tabs}
+                  options={{
+                    title: "Movies App",
+                    header: ({ options, route }) => (
+                      <Header title={options.title ?? route.name} />
+                    ),
+                  }}
+                />
+                <Stack.Screen
                   name="ShowDetails"
                   component={ShowDetails}
                   options={{

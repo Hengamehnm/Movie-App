@@ -17,9 +17,7 @@ export default function Card({
           resizeMode="cover"
         />
       ) : (
-        <View
-          style={{ width: 100, height: 110, backgroundColor: colors.border }}
-        />
+        <View style={[styles.grayImage, styles.coverImage]} />
       )}
       <View style={styles.info}>
         <Text style={[styles.header, { flexWrap: "wrap" }]}>{title}</Text>
@@ -66,6 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.header,
   },
+  grayImage: { backgroundColor: colors.border },
   info: {
     gap: "4",
     flex: 1,
