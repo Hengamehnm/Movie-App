@@ -1,15 +1,13 @@
-import {
-  Button,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  onPressDetails,
-} from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { colors } from "../utils/colors";
 
-export default function Card({ title, popularity, release, imageSrc, onPressDetails }) {
+export default function Card({
+  title,
+  popularity,
+  release,
+  imageSrc,
+  onPressDetails,
+}) {
   return (
     <View style={styles.container}>
       {imageSrc ? (
@@ -19,7 +17,7 @@ export default function Card({ title, popularity, release, imageSrc, onPressDeta
           resizeMode="cover"
         />
       ) : (
-        <View />
+        <View style={[styles.grayImage, styles.coverImage]} />
       )}
       <View style={styles.info}>
         <Text style={[styles.header, { flexWrap: "wrap" }]}>{title}</Text>
@@ -66,6 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: colors.header,
   },
+  grayImage: { backgroundColor: colors.border },
   info: {
     gap: "4",
     flex: 1,
