@@ -39,4 +39,4 @@ yarn-error.*
 # generated native folders
 /ios
 /android
-src/utils/secrets.js
+src/utils/secret.jssrc/utils/secret.js
