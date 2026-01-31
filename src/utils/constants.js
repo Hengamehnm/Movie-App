@@ -1,3 +1,5 @@
-export const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NDExNTNlNjM3NjgxNWJhMjhjMTU3ZDc3ODU4ZTNmZCIsIm5iZiI6MTc2OTU1MTU5Mi4xMzY5OTk4LCJzdWIiOiI2OTc5MzZlODc2NTY1N2RkNjMwMmYwNTEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.R67EyuG0Hex3VEAv-Cj4rT7O3_AnwZAqAB6-oMvRBdY";
+import { TMDB_API_KEY, TMDB_ACCESS_TOKEN } from "./secret";
+
 export const URL = "https://api.themoviedb.org/3";
+export const API_KEY = TMDB_API_KEY;
+export const ACCESS_TOKEN = TMDB_ACCESS_TOKEN;

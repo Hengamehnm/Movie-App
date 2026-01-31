@@ -1,15 +1,13 @@
-import { ACCESS_TOKEN, URL } from "./constants";
-
-const headers = {
-  accept: "application/json",
-  Authorization: `Bearer ${ACCESS_TOKEN}`,
-};
+import { API_KEY, URL } from "./constants";
 
 export async function getMovie(media, type, page) {
-  const url = `${URL}/${media}/${type}?language=en-US&page=${page}`;
+  const url = `${URL}/${media}/${type}?api_key=${API_KEY}&language=en-US&page=${page}`;
 
   try {
-    const res = await fetch(url, { method: "GET", headers });
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { accept: "application/json" },
+    });
     return await res.json();
   } catch (error) {
     console.log(`failed fetch ${media}`, error);
@@ -17,21 +15,27 @@ export async function getMovie(media, type, page) {
 }
 
 export async function searchMovieApi(selected, searchInput) {
-  const url = `${URL}/search/${selected}?query=${searchInput}&language=en-US&page=1`;
+  const url = `${URL}/search/${selected}?api_key=${API_KEY}&query=${searchInput}&language=en-US&page=1`;
 
   try {
-    const res = await fetch(url, { method: "GET", headers });
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { accept: "application/json" },
+    });
     return await res.json();
   } catch (error) {
-    console.log("failed fetch movie", error);
+    console.log("failed fetch search", error);
   }
 }
 
 export async function getDetails(mediaType, id) {
-  const url = `${URL}/${mediaType}/${id}?language=en-US`;
+  const url = `${URL}/${mediaType}/${id}?api_key=${API_KEY}&language=en-US`;
 
   try {
-    const res = await fetch(url, { method: "GET", headers });
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { accept: "application/json" },
+    });
     return await res.json();
   } catch (error) {
     console.log("failed fetch details", error);

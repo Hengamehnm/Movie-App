@@ -18,7 +18,7 @@ export default function Dropdown({ selected, list, onSelect }) {
     <>
       <Pressable style={styles.container} onPress={openSheet}>
         <Text style={styles.selectText}>{selected}</Text>
-        <MaterialCommunityIcons name="chevron-down" size={22} color="black" />
+        <MaterialCommunityIcons name="chevron-down" size={22} color="gray" />
       </Pressable>
 
       <BottomSheetModal
@@ -98,5 +98,6 @@ const styles = StyleSheet.create({
   },
   selectText: {
     fontSize: 16,
+    color: colors.title
   },
 });
