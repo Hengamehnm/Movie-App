@@ -59,7 +59,7 @@ export default function TVShows() {
               key={t.id}
               title={t.name}
               popularity={t.popularity}
-              release={t.release_date}
+              release={t.first_air_date}
               imageSrc={t.poster_path}
               onPressDetails={() =>
                 navigation.navigate("ShowDetails", {
@@ -77,6 +77,7 @@ export default function TVShows() {
 
 const styles = StyleSheet.create({
   container: {
-    container: { flex: 1, backgroundColor: colors.white },
+    flex: 1,
+    backgroundColor: colors.white,
   },
 });
