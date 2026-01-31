@@ -25,7 +25,7 @@ const Home = () => {
     const loadMovies = async () => {
       setLoading(true);
       try {
-        const data = await getMovie(movieType, page);
+        const data = await getMovie("movie", movieType, page);
         setMovie(data?.results ?? []);
       } catch (e) {
         console.log(e);
@@ -67,7 +67,10 @@ const Home = () => {
               release={m.release_date}
               imageSrc={m.poster_path}
               onPressDetails={() =>
-                navigation.navigate("ShowDetails", { id: m.id })
+                navigation.navigate("ShowDetails", {
+                  id: m.id,
+                  mediaType: "movie",
+                })
               }
             />
           ))}

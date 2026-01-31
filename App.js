@@ -41,6 +41,16 @@ export default function App() {
                   }}
                 />
                 <Stack.Screen
+                  name="TvShows"
+                  component={Tabs}
+                  options={{
+                    title: "Movies App",
+                    header: ({ options, route }) => (
+                      <Header title={options.title ?? route.name} />
+                    ),
+                  }}
+                />
+                <Stack.Screen
                   name="ShowDetails"
                   component={ShowDetails}
                   options={{

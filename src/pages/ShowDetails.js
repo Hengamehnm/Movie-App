@@ -5,7 +5,7 @@ import { API_KEY } from "../utils/constants";
 import { colors } from "../utils/colors";
 
 export default function ShowDetails({ route }) {
-  const { id } = route.params;
+  const { id, mediaType } = route.params;
   const [movie, setMovie] = useState(null);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
@@ -15,11 +15,11 @@ export default function ShowDetails({ route }) {
       setLoading(true);
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`,
+          `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${API_KEY}&language=en-US`,
         );
         const data = await res.json();
         setMovie(data);
-        navigation.setOptions({ title: data.title });
+        navigation.setOptions({ title: data.title || data.name });
       } catch (e) {
         console.log(e);
       } finally {
@@ -34,7 +34,7 @@ export default function ShowDetails({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{movie?.title}</Text>
+      <Text style={styles.title}>{movie?.title || movie?.name}</Text>
       <Image
         source={{
           uri: `https://image.tmdb.org/t/p/w500/${movie?.poster_path}`,
