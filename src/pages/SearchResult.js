@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "../components/AppTextInput";
 import Dropdown from "../components/Dropdown";
-import { ActivityIndicator } from "react-native-paper";
+import Loading from "../components/Loading";
 import { colors } from "../utils/colors";
 import { searchMovieApi } from "../utils/getServices";
 import Card from "../components/Card";
@@ -72,7 +72,7 @@ export default function SearchResult() {
         </View>
       </View>
       {loading ? (
-        <ActivityIndicator />
+        <Loading />
       ) : searchResults.length > 0 ? (
         searchResults.map((m, index) => (
           <Card

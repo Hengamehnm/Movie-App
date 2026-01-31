@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, ActivityIndicator, Image } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getDetails } from "../utils/getServices";
 import { colors } from "../utils/colors";
+import Loading from "../components/Loading";
 
 export default function ShowDetails({ route }) {
   const { id, mediaType = "movie" } = route.params;
@@ -27,7 +28,7 @@ export default function ShowDetails({ route }) {
     load();
   }, [id, mediaType]);
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <Loading />;
 
   return (
     <View style={styles.container}>

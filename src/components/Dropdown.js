@@ -1,10 +1,8 @@
 import { useRef } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { colors } from "../utils/colors";
-
-
 
 export default function Dropdown({ selected, list, onSelect }) {
   const bottomSheetModalRef = useRef(null);
@@ -20,7 +18,7 @@ export default function Dropdown({ selected, list, onSelect }) {
     <>
       <Pressable style={styles.container} onPress={openSheet}>
         <Text style={styles.selectText}>{selected}</Text>
-        <Entypo name="chevron-down" size={22} color="black" />
+        <MaterialCommunityIcons name="chevron-down" size={22} color="black" />
       </Pressable>
 
       <BottomSheetModal
@@ -49,7 +47,11 @@ export default function Dropdown({ selected, list, onSelect }) {
                 </Text>
 
                 {isSelected && (
-                  <Ionicons name="checkmark-sharp" size={22} color="white" />
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={22}
+                    color="white"
+                  />
                 )}
               </Pressable>
             );

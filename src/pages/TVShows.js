@@ -1,4 +1,4 @@
-import { StyleSheet, ActivityIndicator } from "react-native";
+import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getMovie } from "../utils/getServices";
@@ -7,6 +7,7 @@ import Card from "../components/Card";
 import { colors } from "../utils/colors";
 import Pagination from "../components/Pagination";
 import { ScrollView } from "react-native-gesture-handler";
+import Loading from "../components/Loading";
 
 const TV_TYPES = ["airing_today", "on_the_air", "popular", "top_rated"];
 
@@ -46,7 +47,7 @@ export default function TVShows() {
         onSelect={setTvShowType}
       />
       {loading ? (
-        <ActivityIndicator />
+        <Loading />
       ) : (
         <>
           <Pagination

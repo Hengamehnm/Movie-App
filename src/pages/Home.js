@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native-paper";
+import Loading from "../components/Loading";
 import { useNavigation } from "@react-navigation/native";
 
 import Card from "../components/Card";
@@ -53,7 +53,7 @@ const Home = () => {
       />
 
       {loading ? (
-        <ActivityIndicator />
+        <Loading />
       ) : (
         <>
           <Pagination
