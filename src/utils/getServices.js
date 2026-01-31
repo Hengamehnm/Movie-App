@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN, URL } from "./constants";
-export async function getMovie(type, page) {
-  const url = `${URL}/movie/${type}?language=en-US&page=${page}`;
+export async function getMovie(media,type, page) {
+  const url = `${URL}/${media}/${type}?language=en-US&page=${page}`;
   try {
     const res = await fetch(url, {
       method: "GET",
@@ -14,7 +14,7 @@ export async function getMovie(type, page) {
 
     return data;
   } catch (error) {
-    console.log("failed fetch movie", error);
+    console.log(`failed fetch ${media}`, error);
   }
 }
 
