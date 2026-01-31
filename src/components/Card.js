@@ -48,10 +48,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: "10",
+    marginHorizontal: 10,
     padding: 10,
     borderBottomColor: colors.border,
-    borderBottomWidth: "0.5",
+    borderBottomWidth: 0.5,
   },
 
   coverImage: {

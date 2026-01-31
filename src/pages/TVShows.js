@@ -8,6 +8,8 @@ import { colors } from "../utils/colors";
 import Pagination from "../components/Pagination";
 import { ScrollView } from "react-native-gesture-handler";
 
+const TV_TYPES = ["airing_today", "on_the_air", "popular", "top_rated"];
+
 export default function TVShows() {
   const navigation = useNavigation();
 
@@ -20,8 +22,8 @@ export default function TVShows() {
     setPage(1);
   }, [tvShowType]);
   useEffect(() => {
-    setLoading(true);
     const loadTvShows = async () => {
+      setLoading(true);
       try {
         const data = await getMovie("tv", tvShowType, page);
         setTvShow(data?.results ?? []);
@@ -40,7 +42,7 @@ export default function TVShows() {
     <ScrollView style={styles.container}>
       <Dropdown
         selected={tvShowType}
-        list={["airing_today", "on_the_air", "popular", "top_rated"]}
+        list={TV_TYPES}
         onSelect={setTvShowType}
       />
       {loading ? (

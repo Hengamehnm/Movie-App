@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, ActivityIndicator, Image } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { API_KEY } from "../utils/constants";
+import { getDetails } from "../utils/getServices";
 import { colors } from "../utils/colors";
 
 export default function ShowDetails({ route }) {
-  const { id, mediaType } = route.params;
+  const { id, mediaType = "movie" } = route.params;
   const [movie, setMovie] = useState(null);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
@@ -14,12 +14,9 @@ export default function ShowDetails({ route }) {
     const load = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${API_KEY}&language=en-US`,
-        );
-        const data = await res.json();
+        const data = await getDetails(mediaType, id);
         setMovie(data);
-        navigation.setOptions({ title: data.title || data.name });
+        navigation.setOptions({ title: data?.title || data?.name });
       } catch (e) {
         console.log(e);
       } finally {
@@ -28,21 +25,28 @@ export default function ShowDetails({ route }) {
     };
 
     load();
-  }, [id]);
+  }, [id, mediaType]);
 
   if (loading) return <ActivityIndicator />;
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{movie?.title || movie?.name}</Text>
-      <Image
-        source={{
-          uri: `https://image.tmdb.org/t/p/w500/${movie?.poster_path}`,
-        }}
-        resizeMode="cover"
-        style={styles.coverImage}
-      />
+
+      {movie?.poster_path ? (
+        <Image
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
+          }}
+          resizeMode="cover"
+          style={styles.coverImage}
+        />
+      ) : (
+        <Text style={styles.text}>No poster available</Text>
+      )}
+
       <Text style={styles.overview}>{movie?.overview}</Text>
+
       <View style={styles.info}>
         <Text
           style={[
@@ -52,12 +56,13 @@ export default function ShowDetails({ route }) {
         >
           Popularity: {movie?.popularity}
         </Text>
-        <Text style={styles.text}>Release Date: {movie?.release_date}</Text>
+        <Text style={styles.text}>
+          Release Date: {movie?.first_air_date || movie?.release_date}
+        </Text>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

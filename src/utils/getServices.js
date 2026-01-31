@@ -26,3 +26,14 @@ export async function searchMovieApi(selected, searchInput) {
     console.log("failed fetch movie", error);
   }
 }
+
+export async function getDetails(mediaType, id) {
+  const url = `${URL}/${mediaType}/${id}?language=en-US`;
+
+  try {
+    const res = await fetch(url, { method: "GET", headers });
+    return await res.json();
+  } catch (error) {
+    console.log("failed fetch details", error);
+  }
+}

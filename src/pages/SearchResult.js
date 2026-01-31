@@ -17,7 +17,7 @@ function RequiredLabel({ children }) {
     </View>
   );
 }
-
+const SEARCH_TYPES = ["movie", "multi", "tv"];
 export default function SearchResult() {
   const navigation = useNavigation();
   const [name, setName] = useState("");
@@ -55,7 +55,7 @@ export default function SearchResult() {
           <View>
             <Dropdown
               selected={searchType}
-              list={["movie", "multi", "tv"]}
+              list={SEARCH_TYPES}
               onSelect={setSearchType}
             />
             <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
@@ -82,7 +82,10 @@ export default function SearchResult() {
             release={m.release_date || m.first_air_date}
             imageSrc={m.poster_path}
             onPressDetails={() =>
-              navigation.navigate("ShowDetails", { id: m.id })
+              navigation.navigate("ShowDetails", {
+                id: m.id,
+                mediaType: m.media_type || searchType,
+              })
             }
           />
         ))

@@ -2,11 +2,14 @@ import { ScrollView, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+
 import Card from "../components/Card";
 import Dropdown from "../components/Dropdown";
 import Pagination from "../components/Pagination";
 import { getMovie } from "../utils/getServices";
 import { colors } from "../utils/colors";
+
+const MOVIE_TYPES = ["now_playing", "popular", "top_rated", "upcoming"];
 
 const Home = () => {
   const navigation = useNavigation();
@@ -22,7 +25,7 @@ const Home = () => {
   }, [movieType]);
 
   useEffect(() => {
-    const loadMovies = async () => {
+    const fetchMovies = async () => {
       setLoading(true);
       try {
         const data = await getMovie("movie", movieType, page);
@@ -35,16 +38,17 @@ const Home = () => {
       }
     };
 
-    loadMovies();
+    fetchMovies();
   }, [movieType, page]);
 
   const canPrev = page > 1;
   const visibleMovies = movie.slice(0, 10);
+
   return (
     <ScrollView style={styles.container}>
       <Dropdown
         selected={movieType}
-        list={["now_playing", "popular", "top_rated", "upcoming"]}
+        list={MOVIE_TYPES}
         onSelect={setMovieType}
       />
 

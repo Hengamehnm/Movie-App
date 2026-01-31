@@ -13,8 +13,14 @@ export default function Tabs() {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "#fff",
-          shadowOffset: { width: 0, height: 1 },
+          tabBarStyle: {
+            backgroundColor: colors.white,
+            shadowColor: colors.green,
+            shadowOpacity: 0.1,
+            shadowRadius: 2,
+            shadowOffset: { width: 0, height: 1 },
+            elevation: 2,
+          },
         },
         tabBarLabelStyle: { fontWeight: "600" },
         tabBarActiveTintColor: colors.green,

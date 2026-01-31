@@ -4,14 +4,15 @@ import { Entypo, Ionicons } from "@expo/vector-icons";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { colors } from "../utils/colors";
 
+
+
 export default function Dropdown({ selected, list, onSelect }) {
   const bottomSheetModalRef = useRef(null);
 
-  const openSheet = () => {
-    bottomSheetModalRef.current?.present();
-  };
+  const openSheet = () => bottomSheetModalRef.current?.present();
 
-  const closeSheet = () => {
+  const selectItem = (item) => {
+    onSelect(item);
     bottomSheetModalRef.current?.close();
   };
 
@@ -29,16 +30,13 @@ export default function Dropdown({ selected, list, onSelect }) {
         enableDynamicSizing={false}
       >
         <BottomSheetView style={styles.contentContainer}>
-          {list.map((i, index) => {
-            const isSelected = selected === i;
+          {list.map((item) => {
+            const isSelected = selected === item;
 
             return (
               <Pressable
-                key={index}
-                onPress={() => {
-                  onSelect(i);
-                  closeSheet();
-                }}
+                key={item}
+                onPress={() => selectItem(item)}
                 style={[styles.row, isSelected && styles.rowSelected]}
               >
                 <Text
@@ -47,7 +45,7 @@ export default function Dropdown({ selected, list, onSelect }) {
                     isSelected && styles.listTextSelected,
                   ]}
                 >
-                  {i}
+                  {item}
                 </Text>
 
                 {isSelected && (
@@ -69,7 +67,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 9,
     paddingVertical: 6,
-
     borderWidth: 1,
     borderColor: colors.border,
     flexDirection: "row",
@@ -77,32 +74,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 16,
   },
-
   contentContainer: {
     paddingTop: 6,
   },
-
   row: {
     paddingVertical: 10,
     paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
   },
-
   rowSelected: {
     backgroundColor: colors.rowGreen,
   },
-
   listText: {
     fontSize: 16,
     color: colors.header,
   },
-
   listTextSelected: {
     color: colors.white,
     fontWeight: "600",
   },
-
   selectText: {
     fontSize: 16,
   },

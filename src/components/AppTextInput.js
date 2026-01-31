@@ -1,4 +1,3 @@
-import React from "react";
 import { View, StyleSheet, TextInput as RNTextInput } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
