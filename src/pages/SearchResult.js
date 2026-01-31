@@ -30,6 +30,7 @@ export default function SearchResult() {
     try {
       const res = await searchMovieApi(searchType, name);
       setSearchResults(res?.results ?? []);
+      setName("");
     } catch (error) {
       console.log("failed search", error);
     } finally {
@@ -42,13 +43,12 @@ export default function SearchResult() {
         <RequiredLabel>Search Movie/TV Show Name</RequiredLabel>
 
         <AppTextInput
+          value={name}
           icon="magnify"
           placeholder="ie, James Bond, CSI"
           autoCorrect={false}
           spellCheck={false}
-          onChangeText={(t) => {
-            setName(t);
-          }}
+          onChangeText={setName}
         />
         <RequiredLabel>Choose Search Type</RequiredLabel>
         <View style={styles.search}>
@@ -93,7 +93,7 @@ export default function SearchResult() {
             marginTop: 22,
             fontSize: 24,
             fontWeight: 700,
-            color: colors.title
+            color: colors.title,
           }}
         >
           Please Initiate a Search
