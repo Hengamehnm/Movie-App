@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     paddingTop: 6,
   },
   containerError: {
-    borderColor: "red",
+    borderColor: colors.error,
   },
   row: {
     paddingVertical: 10,

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   containerError: {
-  borderColor: "red",
+  borderColor: colors.error,
 },
   containerFocused: {
     borderColor: colors.buttonBlue,

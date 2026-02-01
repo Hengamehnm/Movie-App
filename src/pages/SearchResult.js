@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 9,
-    color: "red",
+    color: colors.error,
   },
   input: {
     height: 40,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  required: { color: "red", marginLeft: 2, fontSize: 14 },
+  required: { color: colors.error, marginLeft: 2, fontSize: 14 },
   search: {
     flexDirection: "row",
     gap: 10,
