@@ -24,8 +24,16 @@ export default function SearchResult() {
   const [searchType, setSearchType] = useState("multi");
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [nameError, setNameError] = useState("");
 
   async function searchMovie() {
+    const trimmed = name.trim();
+
+    if (!trimmed) {
+      setNameError("Movie/TV show name is required");
+      return;
+    }
+    setNameError("");
     setLoading(true);
     try {
       const res = await searchMovieApi(searchType, name);
@@ -49,6 +57,7 @@ export default function SearchResult() {
           autoCorrect={false}
           spellCheck={false}
           onChangeText={setName}
+          error={nameError}
         />
         <RequiredLabel>Choose Search Type</RequiredLabel>
         <View style={styles.search}>
@@ -57,8 +66,13 @@ export default function SearchResult() {
               selected={searchType}
               list={SEARCH_TYPES}
               onSelect={setSearchType}
+              error={nameError}
             />
-            <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
+            {nameError ? (
+              <Text style={styles.errorText}>{nameError}</Text>
+            ) : (
+              <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
+            )}
           </View>
           <Pressable style={styles.btn} onPress={searchMovie}>
             <MaterialCommunityIcons
@@ -130,6 +144,10 @@ const styles = StyleSheet.create({
     padding: 40,
     gap: 5,
   },
+  errorText: {
+    fontSize: 9,
+    color: colors.error,
+  },
   input: {
     height: 40,
     margin: 12,
@@ -140,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  required: { color: "red", marginLeft: 2, fontSize: 14 },
+  required: { color: colors.error, marginLeft: 2, fontSize: 14 },
   search: {
     flexDirection: "row",
     gap: 10,

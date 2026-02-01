@@ -5,5 +5,6 @@ export const colors = {
   green: "#2c3e50",
   white: "#fff",
   buttonBlue: "#50B4D0",
-  rowGreen: "#0F9386"
+  rowGreen: "#0F9386",
+  error: "#ff0000"
 };
