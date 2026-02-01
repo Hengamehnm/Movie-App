@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { colors } from "../utils/colors";
 
-export default function Dropdown({ selected, list, onSelect }) {
+export default function Dropdown({ selected, list, error, onSelect }) {
   const bottomSheetModalRef = useRef(null);
 
   const openSheet = () => bottomSheetModalRef.current?.present();
@@ -16,7 +16,10 @@ export default function Dropdown({ selected, list, onSelect }) {
 
   return (
     <>
-      <Pressable style={styles.container} onPress={openSheet}>
+      <Pressable
+        style={[styles.container, error && styles.containerError]}
+        onPress={openSheet}
+      >
         <Text style={styles.selectText}>{selected}</Text>
         <MaterialCommunityIcons name="chevron-down" size={22} color="gray" />
       </Pressable>
@@ -79,6 +82,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 6,
   },
+  containerError: {
+    borderColor: "red",
+  },
   row: {
     paddingVertical: 10,
     paddingHorizontal: 16,
@@ -98,6 +104,6 @@ const styles = StyleSheet.create({
   },
   selectText: {
     fontSize: 16,
-    color: colors.title
+    color: colors.title,
   },
 });

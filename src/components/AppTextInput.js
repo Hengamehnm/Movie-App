@@ -3,11 +3,17 @@ import { View, StyleSheet, TextInput as RNTextInput } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
 
-export default function AppTextInput({ icon, ...otherProps }) {
+export default function AppTextInput({ icon, error, ...otherProps }) {
   const [focused, setFocused] = useState(false);
 
   return (
-    <View style={[styles.container, focused && styles.containerFocused]}>
+    <View
+      style={[
+        styles.container,
+        focused && !error && styles.containerFocused,
+        error && styles.containerError,
+      ]}
+    >
       {icon && (
         <MaterialCommunityIcons name={icon} size={20} color={colors.text} />
       )}
@@ -34,6 +40,9 @@ const styles = StyleSheet.create({
     gap: 10,
     borderColor: colors.border,
   },
+  containerError: {
+  borderColor: "red",
+},
   containerFocused: {
     borderColor: colors.buttonBlue,
   },
