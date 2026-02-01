@@ -9,6 +9,7 @@ import { colors } from "../utils/colors";
 import { searchMovieApi } from "../utils/getServices";
 import Card from "../components/Card";
 import { ScrollView } from "react-native-gesture-handler";
+
 function RequiredLabel({ children }) {
   return (
     <View style={styles.labelRow}>
@@ -17,18 +18,30 @@ function RequiredLabel({ children }) {
     </View>
   );
 }
+
 const SEARCH_TYPES = ["movie", "multi", "tv"];
+
 export default function SearchResult() {
   const navigation = useNavigation();
   const [name, setName] = useState("");
   const [searchType, setSearchType] = useState("multi");
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [nameError, setNameError] = useState("");
 
   async function searchMovie() {
+    const trimmed = name.trim();
+
+    if (!trimmed) {
+      setNameError("Movie/TV show name is required");
+      return;
+    }
+
+    setNameError("");
     setLoading(true);
+
     try {
-      const res = await searchMovieApi(searchType, name);
+      const res = await searchMovieApi(searchType, trimmed);
       setSearchResults(res?.results ?? []);
       setName("");
     } catch (error) {
@@ -37,6 +50,7 @@ export default function SearchResult() {
       setLoading(false);
     }
   }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -48,18 +62,30 @@ export default function SearchResult() {
           placeholder="ie, James Bond, CSI"
           autoCorrect={false}
           spellCheck={false}
-          onChangeText={setName}
+          onChangeText={(t) => {
+            setName(t);
+            if (nameError) setNameError("");
+          }}
+          error={nameError}
         />
+
         <RequiredLabel>Choose Search Type</RequiredLabel>
+
         <View style={styles.search}>
           <View>
             <Dropdown
               selected={searchType}
               list={SEARCH_TYPES}
               onSelect={setSearchType}
+              error={nameError}
             />
-            <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
+            {nameError ? (
+              <Text style={styles.errorText}>{nameError}</Text>
+            ) : (
+              <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
+            )}
           </View>
+
           <Pressable style={styles.btn} onPress={searchMovie}>
             <MaterialCommunityIcons
               name="magnify"
@@ -71,6 +97,7 @@ export default function SearchResult() {
           </Pressable>
         </View>
       </View>
+
       {loading ? (
         <Loading />
       ) : searchResults.length > 0 ? (
@@ -90,17 +117,7 @@ export default function SearchResult() {
           />
         ))
       ) : (
-        <Text
-          style={{
-            textAlign: "center",
-            marginTop: 22,
-            fontSize: 24,
-            fontWeight: 700,
-            color: colors.title,
-          }}
-        >
-          Please Initiate a Search
-        </Text>
+        <Text style={styles.emptyText}>Please Initiate a Search</Text>
       )}
     </ScrollView>
   );
@@ -130,12 +147,6 @@ const styles = StyleSheet.create({
     padding: 40,
     gap: 5,
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 50,
-  },
   labelRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -146,5 +157,18 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: "center",
     alignSelf: "center",
+  },
+  errorText: {
+    color: "red",
+    marginTop: 4,
+    fontSize: 9,
+  },
+
+  emptyText: {
+    textAlign: "center",
+    marginTop: 22,
+    fontSize: 24,
+    fontWeight: "700",
+    color: colors.title,
   },
 });
