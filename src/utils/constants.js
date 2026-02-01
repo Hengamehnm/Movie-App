@@ -1,5 +1,11 @@
-export const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NDExNTNlNjM3NjgxNWJhMjhjMTU3ZDc3ODU4ZTNmZCIsIm5iZiI6MTc2OTU1MTU5Mi4xMzY5OTk4LCJzdWIiOiI2OTc5MzZlODc2NTY1N2RkNjMwMmYwNTEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.R67EyuG0Hex3VEAv-Cj4rT7O3_AnwZAqAB6-oMvRBdY";
-export const URL = "https://api.themoviedb.org/3";
+import Constants from "expo-constants";
 
-export const API_KEY = "441153e6376815ba28c157d77858e3fd";
+const extra =
+  Constants.expoConfig?.extra ??
+  Constants.manifest?.extra ??
+  Constants.manifest2?.extra ??
+  {};
+
+export const URL = "https://api.themoviedb.org/3";
+export const API_KEY = extra.TMDB_API_KEY;
+export const ACCESS_TOKEN = extra.TMDB_ACCESS_TOKEN;

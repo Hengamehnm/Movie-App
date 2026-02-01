@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AppTextInput from "../components/AppTextInput";
 import Dropdown from "../components/Dropdown";
-import { ActivityIndicator } from "react-native-paper";
+import Loading from "../components/Loading";
 import { colors } from "../utils/colors";
 import { searchMovieApi } from "../utils/getServices";
 import Card from "../components/Card";
@@ -17,7 +17,7 @@ function RequiredLabel({ children }) {
     </View>
   );
 }
-
+const SEARCH_TYPES = ["movie", "multi", "tv"];
 export default function SearchResult() {
   const navigation = useNavigation();
   const [name, setName] = useState("");
@@ -55,7 +55,7 @@ export default function SearchResult() {
           <View>
             <Dropdown
               selected={searchType}
-              list={["movie", "multi", "tv"]}
+              list={SEARCH_TYPES}
               onSelect={setSearchType}
             />
             <Text style={{ fontSize: 9 }}>Please Select a Search Type</Text>
@@ -72,7 +72,7 @@ export default function SearchResult() {
         </View>
       </View>
       {loading ? (
-        <ActivityIndicator />
+        <Loading />
       ) : searchResults.length > 0 ? (
         searchResults.map((m, index) => (
           <Card
@@ -82,7 +82,10 @@ export default function SearchResult() {
             release={m.release_date || m.first_air_date}
             imageSrc={m.poster_path}
             onPressDetails={() =>
-              navigation.navigate("ShowDetails", { id: m.id })
+              navigation.navigate("ShowDetails", {
+                id: m.id,
+                mediaType: m.media_type || searchType,
+              })
             }
           />
         ))
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     borderRadius: 5,
-    width: "30%",
+    paddingHorizontal: 12,
     height: 35,
     marginBottom: 10,
     gap: 5,

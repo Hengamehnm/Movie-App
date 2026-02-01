@@ -18,17 +18,17 @@ export default function Header({ title }) {
 
 const styles = StyleSheet.create({
   safeTop: {
-    backgroundColor: colors.green, 
+    backgroundColor: colors.green,
   },
   container: {
     height: 56,
-    backgroundColor: colors.green, 
+    backgroundColor: colors.green,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
   },
   title: {
-    color: "#fff",
+    color: colors.white,
     fontSize: 18,
     fontWeight: "600",
     textAlign: "center",

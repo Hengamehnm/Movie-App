@@ -1,4 +1,4 @@
-import { StyleSheet, ActivityIndicator } from "react-native";
+import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getMovie } from "../utils/getServices";
@@ -7,6 +7,9 @@ import Card from "../components/Card";
 import { colors } from "../utils/colors";
 import Pagination from "../components/Pagination";
 import { ScrollView } from "react-native-gesture-handler";
+import Loading from "../components/Loading";
+
+const TV_TYPES = ["airing_today", "on_the_air", "popular", "top_rated"];
 
 export default function TVShows() {
   const navigation = useNavigation();
@@ -20,8 +23,8 @@ export default function TVShows() {
     setPage(1);
   }, [tvShowType]);
   useEffect(() => {
-    setLoading(true);
     const loadTvShows = async () => {
+      setLoading(true);
       try {
         const data = await getMovie("tv", tvShowType, page);
         setTvShow(data?.results ?? []);
@@ -40,11 +43,11 @@ export default function TVShows() {
     <ScrollView style={styles.container}>
       <Dropdown
         selected={tvShowType}
-        list={["airing_today", "on_the_air", "popular", "top_rated"]}
+        list={TV_TYPES}
         onSelect={setTvShowType}
       />
       {loading ? (
-        <ActivityIndicator />
+        <Loading />
       ) : (
         <>
           <Pagination
@@ -59,7 +62,7 @@ export default function TVShows() {
               key={t.id}
               title={t.name}
               popularity={t.popularity}
-              release={t.release_date}
+              release={t.first_air_date}
               imageSrc={t.poster_path}
               onPressDetails={() =>
                 navigation.navigate("ShowDetails", {
@@ -77,6 +80,7 @@ export default function TVShows() {
 
 const styles = StyleSheet.create({
   container: {
-    container: { flex: 1, backgroundColor: colors.white },
+    flex: 1,
+    backgroundColor: colors.white,
   },
 });
